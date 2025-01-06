@@ -14,10 +14,7 @@ const PORT = process.env.PORT;
 const app = express();
 const clientBuildPath = path.join(__dirname, "../client/build");
 app.use(express.static(clientBuildPath));
-//as all logic in index.html
-app.get("*",(req,res)=>{
-    res.sendFile(path.join(clientBuildPath,"index.html"))
-})
+
 app.use(
     cors({
         origin: ["http://localhost:3000", "https://bookmyshow-deployment-1.onrender.com"], // Allow only your frontend origin
@@ -81,7 +78,10 @@ app.use("/api/bookings", BOOKING_ROUTER);
 app.get("/", (req, res) =>
     res.status(201).send("Welcome to the home page.")
 );
-
+//as all logic in index.html
+app.get("*",(req,res)=>{//wildcard matching should be kept at last
+    res.sendFile(path.join(clientBuildPath,"index.html"))
+})
 app.use((req, res) =>
     res.status(404).json({ message: "page not found" })
 );
